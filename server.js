@@ -1,7 +1,7 @@
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt-nodejs");
-const cors = require("cors");
 const knex = require("knex");
 const morgan = require("morgan");
 
@@ -18,8 +18,8 @@ const db = knex({
 
 const app = express();
 
-app.use(morgan("combined"));
 app.use(cors());
+app.use(morgan("combined"));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {

@@ -18,8 +18,22 @@ const db = knex({
 
 const app = express();
 
-app.use(cors());
+var whitelist = [
+  "https://smart-brain-moz.herokuapp.com",
+  "http://example2.com",
+];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
 app.use(morgan("combined"));
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
@@ -49,5 +63,5 @@ app.post("/imageurl", auth.requireAuth, (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`app is running on port 3000 ${process.env.PORT}`);
+  console.log(`app is running on port ${process.env.PORT || 3000}`);
 });
